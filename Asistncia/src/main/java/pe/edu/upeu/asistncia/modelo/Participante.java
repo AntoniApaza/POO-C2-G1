@@ -14,7 +14,7 @@ import pe.edu.upeu.asistncia.enums.TipoParticipante;
 public class Participante {
     private StringProperty dni;
     private StringProperty nombre;
-    private StringProperty apellidos;
+    private StringProperty apellido;
     private Carrera carrera;
     private TipoParticipante tipoParticipante;
     private BooleanProperty estado;
