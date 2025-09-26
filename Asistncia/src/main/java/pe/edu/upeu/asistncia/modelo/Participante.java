@@ -12,10 +12,10 @@ import pe.edu.upeu.asistncia.enums.TipoParticipante;
 @NoArgsConstructor
 @Data
 public class Participante {
-    private StringProperty dni;
-    private StringProperty nombre;
-    private StringProperty apellido;
-    private Carrera carrera;
-    private TipoParticipante tipoParticipante;
-    private BooleanProperty estado;
+    private StringProperty Dni;
+    private StringProperty Nombre;
+    private StringProperty Apellido;
+    private Carrera Carrera;
+    private TipoParticipante TipoParticipante;
+    private BooleanProperty Estado;
 }

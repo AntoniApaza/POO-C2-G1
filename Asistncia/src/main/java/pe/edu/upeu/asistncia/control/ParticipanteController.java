@@ -68,8 +68,6 @@ public class ParticipanteController {
         limpiarFormulario();
         listarParticipantes();
     }
-
-
     public void definirColumnas(){
         dniCol =new TableColumn<>("DNI");
         nombreCol =new TableColumn<>("Nombre");
@@ -77,6 +75,7 @@ public class ParticipanteController {
         carreraCol=new TableColumn<>("Carrera");
         tipoParticipanteCol=new TableColumn<>("Tipo Participante");
         opcCol=new TableColumn<>("Opcion");
+        opcCol.setPrefWidth(200);
 
         tableRegPart.getColumns().addAll(dniCol,nombreCol,apellidoCol,carreraCol,tipoParticipanteCol,opcCol);
     }
