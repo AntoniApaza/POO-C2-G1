@@ -11,7 +11,7 @@ implements ParticipanteServicioI {
 
     @Override
     public void save(Participante participante) {
-        participantes.add(participante);
+        super.save(participante);
     }
     @Override
     public Participante update(Participante participante, int index) {
@@ -25,12 +25,10 @@ implements ParticipanteServicioI {
     public Participante findById(int index) {
         return participantes.get(index);
     }
+
     @Override
     public List<Participante> findAll(){
-        if(participantes.isEmpty()){
-            return super.findAll();
-        }
-        return participantes;
+        return super.findAll();
     }
 }
 

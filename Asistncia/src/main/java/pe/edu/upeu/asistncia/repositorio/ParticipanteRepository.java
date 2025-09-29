@@ -2,24 +2,57 @@ package pe.edu.upeu.asistncia.repositorio;
 
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
+import pe.edu.upeu.asistncia.conexion.ConDB;
 import pe.edu.upeu.asistncia.enums.Carrera;
 import pe.edu.upeu.asistncia.enums.TipoParticipante;
 import pe.edu.upeu.asistncia.modelo.Participante;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class ParticipanteRepository {
-    protected List<Participante> participantes = new ArrayList<>();
+    protected List<Participante> participantes =null;
+    Connection con= ConDB.getConexion();
+    PreparedStatement pst=null;
+    ResultSet rs=null;
+
+    public void save(Participante p){
+        String sql="INSERT INTO participante\n" +
+                "\n" + "(dni, nombre, apellido, carrera, tipo_participante, estado)\n" + "\n" +
+                "VALUES(?, ?, ?, ?, ?, 1);";
+        try {
+            pst= con.prepareStatement(sql);
+            pst.setString(1,p.getDni().getValue());
+            pst.setString(2,p.getNombre().getValue());
+            pst.setString(3,p.getApellido().getValue());
+            pst.setString(4, p.getCarrera().name());
+            pst.setString(5,p.getTipoParticipante().name());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public List<Participante> findAll() {
-    participantes.add(new Participante(
-            new SimpleStringProperty("76478932"),
-            new SimpleStringProperty("pepe"),
-            new SimpleStringProperty("quispe"),
-            Carrera.SISTEMAS,
-            TipoParticipante.ASISTENTE,
-            new SimpleBooleanProperty(true)));
+        participantes = new ArrayList<>();
+        try{
+            pst=con.prepareStatement("SELECT * FROM participante");
+            rs=pst.executeQuery();
+            while (rs.next()){
+                Participante p=new Participante();
+                p.setDni(new SimpleStringProperty(rs.getString("dni")));
+                p.setNombre(new SimpleStringProperty(rs.getString("nombre")));
+                p.setApellido(new SimpleStringProperty(rs.getString("apellidos")));
+                p.setCarrera(Carrera.valueOf(rs.getString("carrera")));
+                p.setTipoParticipante(TipoParticipante.valueOf(rs.getString("tipo_participante")));
+                participantes.add(p);
+            }
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
     return participantes;
     }
 }

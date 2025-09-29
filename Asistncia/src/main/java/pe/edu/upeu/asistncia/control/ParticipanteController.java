@@ -22,7 +22,7 @@ public class ParticipanteController {
     @FXML
     private ComboBox<TipoParticipante> cbxTipoParticipante;
     @FXML
-    private TextField txtNombres,txtApellidos,txtDni;
+    private TextField txtNombre,txtApellido,txtDni;
     @FXML
     private TableView<Participante> tableRegPart;
     ObservableList<Participante> participantes;
@@ -45,8 +45,8 @@ public class ParticipanteController {
         listarParticipantes();
     }
     public void limpiarFormulario(){
-        txtNombres.setText("");
-        txtApellidos.setText("");
+        txtNombre.setText("");
+        txtApellido.setText("");
         txtDni.setText("");
         cbxCarrera.getSelectionModel().clearSelection();
         cbxTipoParticipante.getSelectionModel().clearSelection();
@@ -55,8 +55,8 @@ public class ParticipanteController {
     public void registrarParticipante(){
         Participante p=new Participante();
         p.setDni(new SimpleStringProperty(txtDni.getText()));
-        p.setNombre(new SimpleStringProperty(txtNombres.getText()));
-        p.setApellido(new SimpleStringProperty(txtApellidos.getText()));
+        p.setNombre(new SimpleStringProperty(txtNombre.getText()));
+        p.setApellido(new SimpleStringProperty(txtApellido.getText()));
         p.setCarrera(cbxCarrera.getSelectionModel().getSelectedItem());
         p.setTipoParticipante(cbxTipoParticipante.getSelectionModel().getSelectedItem());
         if(indexEdit==-1){
@@ -97,8 +97,8 @@ public class ParticipanteController {
     }
     public void editarParticipante(Participante p, int index){
         txtDni.setText(p.getDni().getValue());
-        txtNombres.setText(p.getNombre().getValue());
-        txtApellidos.setText(p.getApellido().getValue());
+        txtNombre.setText(p.getNombre().getValue());
+        txtApellido.setText(p.getApellido().getValue());
         cbxTipoParticipante.getSelectionModel().select(p.getTipoParticipante());
         cbxCarrera.getSelectionModel().select(p.getCarrera());
         indexEdit=index;
