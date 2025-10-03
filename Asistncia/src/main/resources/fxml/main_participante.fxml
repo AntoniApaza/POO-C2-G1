@@ -44,7 +44,7 @@
                               <Label text="Tipo Participante:" GridPane.rowIndex="5" />
                               <TextField fx:id="txtDni" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
                               <TextField fx:id="txtNombre" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="2" />
-                              <TextField fx:id="txtApellido" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3" />
+                              <TextField fx:id="txtApelido" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3" />
                               <ComboBox fx:id="cbxCarrera" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4" />
                               <ComboBox fx:id="cbxTipoParticipante" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="5" />
                               <Button mnemonicParsing="false" text="Buscar" GridPane.columnIndex="3" GridPane.rowIndex="1">

@@ -1,6 +1,5 @@
 package pe.edu.upeu.asistncia.repositorio;
 
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import pe.edu.upeu.asistncia.conexion.ConDB;
 import pe.edu.upeu.asistncia.enums.Carrera;
@@ -15,22 +14,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class ParticipanteRepository {
-    protected List<Participante> participantes =null;
-    Connection con= ConDB.getConexion();
-    PreparedStatement pst=null;
-    ResultSet rs=null;
+    protected List<Participante> participantes = null;
+    Connection con = ConDB.getConexion();
+    PreparedStatement pst = null;
+    ResultSet rs = null;
 
-    public void save(Participante p){
-        String sql="INSERT INTO participante\n" +
-                "\n" + "(dni, nombre, apellido, carrera, tipo_participante, estado)\n" + "\n" +
+    public void save(Participante p) {
+        String sql = "INSERT INTO participante\n" +
+                "\n" + "(dni, nombre, Apelido, carrera, tipo_participante, estado)\n" + "\n" +
                 "VALUES(?, ?, ?, ?, ?, 1);";
         try {
-            pst= con.prepareStatement(sql);
-            pst.setString(1,p.getDni().getValue());
-            pst.setString(2,p.getNombre().getValue());
-            pst.setString(3,p.getApellido().getValue());
+            pst = con.prepareStatement(sql);
+            pst.setString(1, p.getDni().getValue());
+            pst.setString(2, p.getNombre().getValue());
+            pst.setString(3, p.getApellido().getValue());
             pst.setString(4, p.getCarrera().name());
-            pst.setString(5,p.getTipoParticipante().name());
+            pst.setString(5, p.getTipoParticipante().name());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -38,21 +37,55 @@ public abstract class ParticipanteRepository {
 
     public List<Participante> findAll() {
         participantes = new ArrayList<>();
-        try{
-            pst=con.prepareStatement("SELECT * FROM participante");
-            rs=pst.executeQuery();
-            while (rs.next()){
-                Participante p=new Participante();
+        try {
+            pst = con.prepareStatement("SELECT * FROM participante");
+            rs = pst.executeQuery();
+            while (rs.next()) {
+                Participante p = new Participante();
                 p.setDni(new SimpleStringProperty(rs.getString("dni")));
                 p.setNombre(new SimpleStringProperty(rs.getString("nombre")));
-                p.setApellido(new SimpleStringProperty(rs.getString("apellidos")));
+                p.setApellido(new SimpleStringProperty(rs.getString("apelido")));
                 p.setCarrera(Carrera.valueOf(rs.getString("carrera")));
                 p.setTipoParticipante(TipoParticipante.valueOf(rs.getString("tipo_participante")));
                 participantes.add(p);
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-    return participantes;
+        return participantes;
+    }
+
+    public Participante update(Participante p) {
+
+        String sql = " UPDATE participante \n" +
+                "SET nombre=?, Apelido=?, carrera=?, tipo_participante=?, estado=? \n" +
+                "WHERE dni=? ";
+        int i = 0;
+        try {
+            pst = con.prepareStatement(sql);
+            pst.setString(++i, p.getNombre().getValue());
+            pst.setString(++i, p.getApellido().getValue());
+            pst.setString(++i, p.getCarrera().name());
+            pst.setString(++i, p.getTipoParticipante().name());
+            pst.setBoolean(++i, p.getEstado().getValue());
+            pst.setString(++i, p.getDni().getValue());
+            pst.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return p;
+    }
+
+    public void delete(String dni ) {
+        String sql = " DELETE FROM participante WHERE dni=? ";
+        int i = 0;
+        try {
+            pst = con.prepareStatement(sql);
+            pst.setString(++i, dni);
+            pst.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

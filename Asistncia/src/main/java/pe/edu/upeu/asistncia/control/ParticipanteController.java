@@ -1,5 +1,6 @@
 package pe.edu.upeu.asistncia.control;
 
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,7 +23,7 @@ public class ParticipanteController {
     @FXML
     private ComboBox<TipoParticipante> cbxTipoParticipante;
     @FXML
-    private TextField txtNombre,txtApellido,txtDni;
+    private TextField txtNombre,txtApelido,txtDni;
     @FXML
     private TableView<Participante> tableRegPart;
     ObservableList<Participante> participantes;
@@ -46,7 +47,7 @@ public class ParticipanteController {
     }
     public void limpiarFormulario(){
         txtNombre.setText("");
-        txtApellido.setText("");
+        txtApelido.setText("");
         txtDni.setText("");
         cbxCarrera.getSelectionModel().clearSelection();
         cbxTipoParticipante.getSelectionModel().clearSelection();
@@ -56,13 +57,14 @@ public class ParticipanteController {
         Participante p=new Participante();
         p.setDni(new SimpleStringProperty(txtDni.getText()));
         p.setNombre(new SimpleStringProperty(txtNombre.getText()));
-        p.setApellido(new SimpleStringProperty(txtApellido.getText()));
+        p.setApellido(new SimpleStringProperty(txtApelido.getText()));
         p.setCarrera(cbxCarrera.getSelectionModel().getSelectedItem());
         p.setTipoParticipante(cbxTipoParticipante.getSelectionModel().getSelectedItem());
+        p.setEstado(new SimpleBooleanProperty(true));
         if(indexEdit==-1){
             ps.save(p);
         }else{
-            ps.update(p, indexEdit);
+            ps.update(p);
             indexEdit=-1;
         }
         limpiarFormulario();
@@ -71,7 +73,7 @@ public class ParticipanteController {
     public void definirColumnas(){
         dniCol =new TableColumn<>("DNI");
         nombreCol =new TableColumn<>("Nombre");
-        apellidoCol=new TableColumn<>("Apellido");
+        apellidoCol=new TableColumn<>("Apelido");
         carreraCol=new TableColumn<>("Carrera");
         tipoParticipanteCol=new TableColumn<>("Tipo Participante");
         opcCol=new TableColumn<>("Opcion");
@@ -91,14 +93,14 @@ public class ParticipanteController {
         tableRegPart.setItems(participantes);
 
     }
-    public void eliminarParticipante(int index){
-        ps.delete(index);
+    public void eliminarParticipante(String dni){
+        ps.delete(dni);
         listarParticipantes();
     }
     public void editarParticipante(Participante p, int index){
         txtDni.setText(p.getDni().getValue());
         txtNombre.setText(p.getNombre().getValue());
-        txtApellido.setText(p.getApellido().getValue());
+        txtApelido.setText(p.getApellido().getValue());
         cbxTipoParticipante.getSelectionModel().select(p.getTipoParticipante());
         cbxCarrera.getSelectionModel().select(p.getCarrera());
         indexEdit=index;
@@ -115,7 +117,8 @@ public class ParticipanteController {
                     editarParticipante(p,getIndex());
                 });
                 btnDelet.setOnAction(event ->{
-                    eliminarParticipante(getIndex());
+                    Participante p=getTableView().getItems().get(getIndex());
+                    eliminarParticipante(p.getDni().getValue());
                 });
             }
 
